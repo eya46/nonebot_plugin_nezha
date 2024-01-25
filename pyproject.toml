@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "nonebot-plugin-nezha"
+version = "0.1.0"
+description = "nonebot哪吒监控插件，使用哪吒监控API。"
+authors = ["eya46 <61458340+eya46@users.noreply.github.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [{ include = "nonebot_plugin_nezha" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+nonebot2 = ">=2.0.1"
+nonebot-plugin-alconna = "^0.36.0"
+jsonpath = "^0.82.2"
+
+
+[tool.poetry.group.dev.dependencies]
+httpx = ">=0.20.0,<1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q"]
+ignore = ["E402"]
+
+line-length = 121
+target-version = "py38"
