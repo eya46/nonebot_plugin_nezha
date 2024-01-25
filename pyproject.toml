@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-nezha"
-version = "0.1.0"
+version = "0.2.0"
 description = "nonebot哪吒监控插件，使用哪吒监控API。"
 authors = ["eya46 <61458340+eya46@users.noreply.github.com>"]
 readme = "README.md"
@@ -10,7 +10,7 @@ packages = [{ include = "nonebot_plugin_nezha" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 nonebot2 = ">=2.0.1"
-nonebot-plugin-alconna = "^0.36.0"
+nonebot-plugin-alconna = ">=0.35.0,<=0.40.0"
 jsonpath = "^0.82.2"
 
 
