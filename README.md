@@ -38,7 +38,11 @@
 ### 必要配置项
 
 - `nezha_api`: 哪吒监控 api地址
-- `nezha_token`: 哪吒监控 api token
+- `nezha_token`: 哪吒监控 token
+
+### 非必要配置项
+
+详见 [config.py](./nonebot_plugin_nezha/config.py) [Config](./nonebot_plugin_nezha/config.py#L10-L59)
 
 ## 依赖项
 
