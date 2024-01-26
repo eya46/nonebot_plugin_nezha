@@ -12,7 +12,6 @@ class Config(BaseModel, extra=Extra.ignore):
     nezha_token: str
 
     nezha_use_start: bool = Field(default=True)
-    # nezha_use_sep: bool = Field(default=False)
     # 是否使用紧凑模式(命令后是否可以紧跟参数)
     nezha_use_compact: bool = Field(default=True)
 
@@ -20,7 +19,6 @@ class Config(BaseModel, extra=Extra.ignore):
     nezha_replay: bool = Field(default=False)
     nezha_must_super_user: bool = Field(default=True)
 
-    # nezha_prefix: List[str] = Field(default=["哪吒"])
     """
     None:不启用该插件
     List[str]:命令名
