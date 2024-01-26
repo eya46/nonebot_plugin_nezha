@@ -94,8 +94,8 @@ class ToIP(M):
         if not config.nezha_mask_ip:
             return _
         if ":" in _:
-            return _.split(":")[0] + ":***:" + _[::-1].split(":")[0]
-        return _.split(".")[0] + ".*.*." + _[::-1].split(".")[0]
+            return _.split(":")[0] + ":***:" + _.split(":")[-1]
+        return _.split(".")[0] + ".*.*." + _.split(".")[-1]
 
 
 class ToOnlineStatus(M):
