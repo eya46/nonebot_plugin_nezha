@@ -4,13 +4,12 @@
 
 <div align="center">
 
-# NoneBot Plugin nezha
-
-哪吒监控插件
+# NoneBot Plugin NeZha
+## 哪吒监控插件
 
 ![License](https://img.shields.io/github/license/eya46/nonebot_plugin_nezha)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
-![NoneBot](https://img.shields.io/badge/nonebot-2.0.1+-blueviolet)
+![NoneBot](https://img.shields.io/badge/nonebot-2.1.0+-red.svg)
 </div>
 
 ## 安装方式
@@ -44,12 +43,34 @@
 
 详见 [config.py](./nonebot_plugin_nezha/config.py) [Config](./nonebot_plugin_nezha/config.py#L10-L59)
 
+### 推荐配置项
+
+```dotenv
+nezha_api=""
+nezha_token=""
+# 默认的分组
+nezha_arg_default="国内"
+# 在线/离线 的文本
+nezha_template_online_offline=["🟢","🔴"]
+```
+
 ## 依赖项
 
-- [nonebot2](https://github.com/nonebot/nonebot2) >=2.1.0
-- [plugin-alconna](https://github.com/nonebot/plugin-alconna) >=0.35.0,<=0.40.0
+- [nonebot2](https://github.com/nonebot/nonebot2)
+    - `>=2.1.0`
+- [plugin-alconna](https://github.com/nonebot/plugin-alconna)
+    - `>=0.35.0,<=0.40.0`
 
 ## 相关
 
-- [哪吒监控官网](https://nezha.wiki/)
-- [哪吒监控项目地址](https://github.com/naiba/nezha)
+- 哪吒监控官网 https://nezha.wiki
+- 哪吒监控项目地址 https://github.com/naiba/nezha
+
+## 效果
+
+- 哪吒帮助
+  <img src="./img/0.jpg">
+- vps
+  <img src="./img/1.jpg">
+- vps列表
+  <img src="./img/2.jpg">
