@@ -1,6 +1,5 @@
 from typing import Union, Literal
 
-from typing_extensions import Annotated
 from arclet.alconna import Args
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 
@@ -17,7 +16,7 @@ api = API(config.nezha_api, config.nezha_token)
 
 
 @wrap_cmd(config.nezha_cmd_help, Args["index?", int])
-async def help_cmd_handle(index: Annotated[Match[int], AlconnaMatch("index")]):
+async def help_cmd_handle(index: Match[int] = AlconnaMatch("index")):
     if index.available:
         await send(f"{index.result}.{HELPS[index.result]}")
     else:
@@ -25,7 +24,7 @@ async def help_cmd_handle(index: Annotated[Match[int], AlconnaMatch("index")]):
 
 
 @wrap_cmd(config.nezha_cmd_list, Args["tag?", Union[str, Literal["all"]], config.nezha_arg_default])
-async def list_cmd_handle(tag: Annotated[Match[str], AlconnaMatch("tag")]):
+async def list_cmd_handle(tag: Match[str] = AlconnaMatch("tag")):
     if tag.available:
         servers = await api.get_servers_by_tag("" if tag.result == "all" else tag.result)
     else:
@@ -35,7 +34,7 @@ async def list_cmd_handle(tag: Annotated[Match[str], AlconnaMatch("tag")]):
 
 
 @wrap_cmd(config.nezha_cmd_details, Args["arg?", Union[int, str, Literal["all"]], config.nezha_arg_default])
-async def details_cmd_handle(arg: Annotated[Match[Union[int, str]], AlconnaMatch("arg")]):
+async def details_cmd_handle(arg: Match[Union[int, str]] = AlconnaMatch("arg")):
     if arg.available:
         if isinstance(arg.result, int) or "," in arg.result:
             servers = await api.get_servers_details_by_id(arg.result)
