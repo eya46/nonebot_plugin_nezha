@@ -2,12 +2,12 @@ from typing import List, Optional, Union, Tuple
 
 from arclet.alconna import CommandMeta
 from nonebot import get_driver
-from pydantic import BaseModel, Field, Extra, AnyHttpUrl
+from pydantic import BaseModel, Field, AnyHttpUrl
 
 CMD_TYPE = Optional[Union[List[str], Tuple[bool, List[str]]]]
 
 
-class Config(BaseModel, extra=Extra.ignore):
+class Config(BaseModel):
     nezha_api: AnyHttpUrl
     nezha_token: str
 
@@ -59,7 +59,7 @@ class Config(BaseModel, extra=Extra.ignore):
     nezha_offline_time: float = Field(default=30)
 
 
-config: Config = Config.parse_obj(get_driver().config)
+config: Config = Config(**get_driver().config.dict())
 _CM = CommandMeta(compact=config.nezha_use_compact, description="")
 
 __all__ = ["Config", "config", "_CM", "CMD_TYPE"]
