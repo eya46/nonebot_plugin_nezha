@@ -1,5 +1,6 @@
-from typing import Annotated, Union, Literal
+from typing import Union, Literal
 
+from typing_extensions import Annotated
 from arclet.alconna import Args
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 
