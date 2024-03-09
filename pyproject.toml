@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-nezha"
-version = "0.4.0"
+version = "0.4.1"
 description = "nonebot哪吒监控插件，使用哪吒监控API。"
 authors = ["eya46 <61458340+eya46@users.noreply.github.com>"]
 readme = "README.md"

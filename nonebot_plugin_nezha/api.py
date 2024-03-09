@@ -1,10 +1,10 @@
 from typing import Literal, Any, Union, List, Optional
 
 from httpx import AsyncClient
-from pydantic import parse_obj_as
 from yarl import URL
 
 from .model import Server, ServerDetails
+from .tool import parse_obj
 
 
 class API:
@@ -30,14 +30,14 @@ class API:
             return res.get("result")
 
     async def get_servers_by_tag(self, tag: Optional[str] = None) -> List[Server]:
-        return parse_obj_as(List[Server], await self.call_api("api/v1/server/list", "GET", tag=tag))
+        return parse_obj(List[Server], await self.call_api("api/v1/server/list", "GET", tag=tag))
 
     async def get_servers_details_by_tag(self, tag: Optional[str] = None) -> List[ServerDetails]:
-        return parse_obj_as(
+        return parse_obj(
             List[ServerDetails], await self.call_api("api/v1/server/details", "GET", tag=tag)
         )
 
     async def get_servers_details_by_id(self, id_: Optional[Union[int, str]] = None) -> List[ServerDetails]:
-        return parse_obj_as(
+        return parse_obj(
             List[ServerDetails], await self.call_api("api/v1/server/details", "GET", id=str(id_))
         )
