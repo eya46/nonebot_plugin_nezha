@@ -1,43 +1,43 @@
 from typing import List, Optional, Union, Tuple
 
 from arclet.alconna import CommandMeta
-from nonebot import get_driver
+from nonebot.plugin import get_plugin_config
 from pydantic import BaseModel, Field, AnyHttpUrl
 
 CMD_TYPE = Optional[Union[List[str], Tuple[bool, List[str]]]]
 
 
 class Config(BaseModel):
-    nezha_api: AnyHttpUrl
-    nezha_token: str
+    api: AnyHttpUrl = Field(alias="nezha_api")
+    token: str = Field(alias="nezha_token")
 
-    nezha_use_start: bool = Field(default=True)
+    use_start: bool = Field(default=True, alias="nezha_use_start")
     # 是否使用紧凑模式(命令后是否可以紧跟参数)
-    nezha_use_compact: bool = Field(default=True)
+    use_compact: bool = Field(default=True, alias="nezha_use_compact")
 
-    nezha_at: bool = Field(default=False)
-    nezha_replay: bool = Field(default=False)
-    nezha_must_super_user: bool = Field(default=True)
+    at: bool = Field(default=False, alias="nezha_at")
+    replay: bool = Field(default=False, alias="nezha_replay")
+    must_super_user: bool = Field(default=True, alias="nezha_must_super_user")
 
     """
     None:不启用该插件
     List[str]:命令名
     Tuple[bool,List[str]]:是否只能管理使用,命令名
     """
-    nezha_cmd_help: CMD_TYPE = Field(default=["哪吒帮助"])
-    nezha_cmd_list: CMD_TYPE = Field(default=["vps列表"])
-    nezha_cmd_details: CMD_TYPE = Field(default=["vps"])
+    cmd_help: CMD_TYPE = Field(default=["哪吒帮助"], alias="nezha_cmd_help")
+    cmd_list: CMD_TYPE = Field(default=["vps列表"], alias="nezha_cmd_list")
+    cmd_details: CMD_TYPE = Field(default=["vps"], alias="nezha_cmd_details")
 
     # 默认参数
-    nezha_arg_default: Optional[Union[int, str]] = Field(default=None)
+    arg_default: Optional[Union[int, str]] = Field(default=None, alias="nezha_arg_default")
 
-    nezha_template_server: str = Field(default=(
+    template_server: str = Field(default=(
         "#$.name# #$.IfOnline#\n"
         "   ID: #$.id# TAG: #$.tag#\n"
         "   IPv4: #$.ipv4#\n"
         "   IPv6: #$.ipv6#"
-    ))
-    nezha_template_server_details: str = Field(default=(
+    ), alias="nezha_template_server")
+    template_server_details: str = Field(default=(
         "#$.name# #$.IfOnline#\n"
         "   ID: #$.id# TAG: #$.tag#\n"
         "   负载: #$.status.Load1#,#$.status.Load5#,#$.status.Load15#\n"
@@ -46,20 +46,20 @@ class Config(BaseModel):
         "   流量: #$.status.NetInTransfer#↓ ↑#$.status.NetOutTransfer#\n"
         "   IPv4: #$.ipv4#\n"
         "   IPv6: #$.ipv6#"
-    ))
+    ), alias="nezha_template_server_details")
     # datetime.strftime(nezha_template_datetime)
-    nezha_template_datetime: str = Field(default="%Y-%m-%d %H:%M:%S")
-    nezha_template_datetime_placeholder: str = Field(default="无")
-    nezha_template_online_offline: List[str] = Field(default=["在线", "离线"])
+    template_datetime: str = Field(default="%Y-%m-%d %H:%M:%S", alias="nezha_template_datetime")
+    template_datetime_placeholder: str = Field(default="无", alias="nezha_template_datetime_placeholder")
+    nezha_template_online_offline: List[str] = Field(default=["在线", "离线"], alias="nezha_template_online_offline")
 
     # 浮点数小数位数、是否展示IP、是否省略IP中间部分、判断离线时间
-    nezha_decimal_places: int = Field(default=1)
-    nezha_show_ip: bool = Field(default=True)
-    nezha_mask_ip: bool = Field(default=True)
-    nezha_offline_time: float = Field(default=30)
+    decimal_places: int = Field(default=1, alias="nezha_decimal_places")
+    show_ip: bool = Field(default=True, alias="nezha_show_ip")
+    mask_ip: bool = Field(default=True, alias="nezha_mask_ip")
+    offline_time: float = Field(default=30, alias="nezha_offline_time")
 
 
-config: Config = Config(**get_driver().config.dict())
-_CM = CommandMeta(compact=config.nezha_use_compact, description="")
+config: Config = get_plugin_config(Config)
+_CM = CommandMeta(compact=config.use_compact, description="")
 
 __all__ = ["Config", "config", "_CM", "CMD_TYPE"]

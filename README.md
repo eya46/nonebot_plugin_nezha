@@ -9,7 +9,7 @@
 
 ![License](https://img.shields.io/github/license/eya46/nonebot_plugin_nezha)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
-![NoneBot](https://img.shields.io/badge/nonebot-2.1.0+-red.svg)
+![NoneBot](https://img.shields.io/badge/nonebot-2.2.0+-red.svg)
 </div>
 
 ## 安装方式
@@ -56,10 +56,10 @@ nezha_template_online_offline=["🟢","🔴"]
 
 ## 依赖项
 
-- [nonebot2](https://github.com/nonebot/nonebot2)
-    - `>=2.1.0`
+- [nonebot2](https://github.com/nonebot/nonebot2)[httpx]
+    - `^2.2.0`
 - [plugin-alconna](https://github.com/nonebot/plugin-alconna)
-    - `>=0.35.0,<=0.40.0`
+    - `>=0.35.0,<1.0.0`
 
 ## 相关
 

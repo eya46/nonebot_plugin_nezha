@@ -9,8 +9,8 @@ from .model import Server, ServerDetails
 
 class API:
 
-    def __init__(self, url: str, token: str):
-        self.api = URL(url)
+    def __init__(self, url: Any, token: str):
+        self.api = URL(str(url))
         self.token = token
         self.headers = {
             "Authorization": token

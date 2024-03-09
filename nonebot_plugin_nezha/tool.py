@@ -16,7 +16,7 @@ async def send(msg: Union[Any, UniMessage]) -> Optional[Receipt]:
         msg = UniMessage(msg)
     if str(msg) == "":
         return None
-    return await msg.send(at_sender=config.nezha_at, reply_to=config.nezha_replay)
+    return await msg.send(at_sender=config.at, reply_to=config.replay)
 
 
 def get_cmd(cmd: CMD_TYPE) -> Optional[Tuple[bool, List[str]]]:
@@ -48,8 +48,8 @@ def wrap_cmd(cmd: CMD_TYPE, *acl_arg: Any) -> Callable:
         _ = Alconna(help_cmd[1], *acl_arg, meta=_CM)
         HELPS.append(_.get_help().strip())
         on_alconna(
-            _, permission=SUPERUSER if (config.nezha_must_super_user or help_cmd[0]) else None,
-            use_cmd_start=config.nezha_use_start, block=True, priority=100 - max(len(i) for i in help_cmd[1])
+            _, permission=SUPERUSER if (config.must_super_user or help_cmd[0]) else None,
+            use_cmd_start=config.use_start, block=True, priority=100 - max(len(i) for i in help_cmd[1])
         ).handle()(_catch)
         return func
 

@@ -6,7 +6,7 @@ from pydantic import BaseModel, root_validator
 
 from .config import config
 
-_n = config.nezha_decimal_places
+_n = config.decimal_places
 
 
 def _rd(x):
@@ -43,7 +43,7 @@ class ToDatetime(M):
     @classmethod
     def transfer(cls, _: int):
         _ = datetime.fromtimestamp(_)
-        return _.strftime(config.nezha_template_datetime) if _.timestamp() > 0 else "无"
+        return _.strftime(config.template_datetime) if _.timestamp() > 0 else "无"
 
 
 class ToTotal(M):
@@ -89,9 +89,9 @@ class ToIP(M):
     def transfer(cls, _: str):
         if _ == "":
             return "无"
-        if not config.nezha_show_ip:
+        if not config.show_ip:
             return "***"
-        if not config.nezha_mask_ip:
+        if not config.mask_ip:
             return _
         if ":" in _:
             return _.split(":")[0] + ":***:" + _.split(":")[-1]
@@ -149,7 +149,7 @@ class Server(BaseModel):
 
     @root_validator(pre=True)
     def _validator(cls, data):
-        data["IfOnline"] = datetime.now().timestamp() - data["last_active"] < config.nezha_offline_time
+        data["IfOnline"] = datetime.now().timestamp() - data["last_active"] < config.offline_time
         return data
 
 
@@ -166,5 +166,5 @@ class ServerDetails(Server):
         data["MemoryPercent"] = f'{_rd(data["status"]["MemUsed"] / data["host"]["MemTotal"] * 100)}%'
         data["CpuPercent"] = f'{_rd(data["status"]["CPU"])}%'
         data["DiskPercent"] = f'{_rd(data["status"]["DiskUsed"] / data["host"]["DiskTotal"] * 100)}%'
-        data["IfOnline"] = datetime.now().timestamp() - data["last_active"] < config.nezha_offline_time
+        data["IfOnline"] = datetime.now().timestamp() - data["last_active"] < config.offline_time
         return data
