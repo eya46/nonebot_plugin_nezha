@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any, Union, Callable, Optional, List, Tuple, TypeVar, Type
+from typing import Any, Union, Callable, Optional, List, Tuple
 
 from arclet.alconna import Alconna
 from nonebot.permission import SUPERUSER
@@ -7,21 +7,9 @@ from nonebot.typing import T_Handler
 from nonebot_plugin_alconna import UniMessage, on_alconna
 from nonebot_plugin_alconna.uniseg import Receipt
 
-from .config import config, CMD_TYPE, _CM
+from .config import config, _CM
+from .const import CMD_TYPE
 from .depend import _raw_command
-
-T = TypeVar("T")
-
-
-def parse_obj(type_: Type[T], data: Any) -> T:
-    from pydantic import VERSION
-    _ = VERSION.split(".")[0]
-    if _ == "2":
-        from pydantic import TypeAdapter
-        return TypeAdapter(type_).validate_python(data)
-    else:
-        from pydantic import parse_obj_as
-        return parse_obj_as(type_, data)
 
 
 async def send(msg: Union[Any, UniMessage]) -> Optional[Receipt]:
@@ -69,4 +57,4 @@ def wrap_cmd(cmd: CMD_TYPE, *acl_arg: Any) -> Callable:
     return wrapper
 
 
-__all__ = ["get_cmd", "send", "wrap_cmd", "HELPS", "parse_obj"]
+__all__ = ["get_cmd", "send", "wrap_cmd", "HELPS"]

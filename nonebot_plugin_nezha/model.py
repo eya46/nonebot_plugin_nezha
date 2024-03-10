@@ -2,8 +2,9 @@ from abc import abstractmethod
 from datetime import datetime
 from typing import List, Union
 
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel
 
+from .const import validator
 from .config import config
 
 _n = config.decimal_places
@@ -21,13 +22,13 @@ class M(str):
 
     @classmethod
     @abstractmethod
-    def transfer(cls, _):
+    def transfer(cls, _, *__, **___):
         pass
 
 
 class ToTime(M):
     @classmethod
-    def transfer(cls, _: Union[int, float]):
+    def transfer(cls, _: Union[int, float], *__, **___):
         if _ < 60:
             return f"{_}s"
         elif _ < 60 * 60:
@@ -41,14 +42,14 @@ class ToTime(M):
 class ToDatetime(M):
 
     @classmethod
-    def transfer(cls, _: int):
+    def transfer(cls, _: int, *__, **___):
         _ = datetime.fromtimestamp(_)
         return _.strftime(config.template_datetime) if _.timestamp() > 0 else "无"
 
 
 class ToTotal(M):
     @classmethod
-    def transfer(cls, _: int):
+    def transfer(cls, _: int, *__, **___):
         # bytes to str
         if _ < 1024:
             return f"{_}B"
@@ -64,7 +65,7 @@ class ToTotal(M):
 
 class ToSpeed(M):
     @classmethod
-    def transfer(cls, _: int):
+    def transfer(cls, _: int, *__, **___):
         # speed to str
         if _ < 1024:
             return f"{_}B/s"
@@ -80,13 +81,13 @@ class ToSpeed(M):
 
 class ToFloat(M):
     @classmethod
-    def transfer(cls, _: float):
+    def transfer(cls, _: float, *__, **___):
         return str(_rd(_))
 
 
 class ToIP(M):
     @classmethod
-    def transfer(cls, _: str):
+    def transfer(cls, _: str, *__, **___):
         if _ == "":
             return "无"
         if not config.show_ip:
@@ -100,7 +101,7 @@ class ToIP(M):
 
 class ToOnlineStatus(M):
     @classmethod
-    def transfer(cls, _: bool):
+    def transfer(cls, _: bool, *__, **___):
         return config.nezha_template_online_offline[0 if _ else 1]
 
 
@@ -147,7 +148,8 @@ class Server(BaseModel):
 
     IfOnline: ToOnlineStatus
 
-    @root_validator(pre=True)
+    @validator
+    @classmethod
     def _validator(cls, data):
         data["IfOnline"] = datetime.now().timestamp() - data["last_active"] < config.offline_time
         return data
@@ -161,7 +163,8 @@ class ServerDetails(Server):
     CpuPercent: str
     DiskPercent: str
 
-    @root_validator(pre=True)
+    @validator
+    @classmethod
     def _validator(cls, data):
         data["MemoryPercent"] = f'{_rd(data["status"]["MemUsed"] / data["host"]["MemTotal"] * 100)}%'
         data["CpuPercent"] = f'{_rd(data["status"]["CPU"])}%'

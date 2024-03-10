@@ -4,7 +4,7 @@ from httpx import AsyncClient
 from yarl import URL
 
 from .model import Server, ServerDetails
-from .tool import parse_obj
+from .const import parse_obj
 
 
 class API:

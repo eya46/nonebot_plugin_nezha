@@ -1,10 +1,10 @@
-from typing import List, Optional, Union, Tuple
+from typing import List, Optional, Union
 
 from arclet.alconna import CommandMeta
 from nonebot.plugin import get_plugin_config
 from pydantic import BaseModel, Field, AnyHttpUrl
 
-CMD_TYPE = Optional[Union[List[str], Tuple[bool, List[str]]]]
+from .const import CMD_TYPE
 
 
 class Config(BaseModel):
@@ -62,4 +62,4 @@ class Config(BaseModel):
 config: Config = get_plugin_config(Config)
 _CM = CommandMeta(compact=config.use_compact, description="")
 
-__all__ = ["Config", "config", "_CM", "CMD_TYPE"]
+__all__ = ["Config", "config", "_CM"]
