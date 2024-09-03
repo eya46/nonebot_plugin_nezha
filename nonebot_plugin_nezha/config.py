@@ -1,10 +1,11 @@
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 from arclet.alconna import CommandMeta
+from nonebot import logger
 from nonebot.plugin import get_plugin_config
-from pydantic import BaseModel, Field, AnyHttpUrl
+from pydantic import AnyHttpUrl, BaseModel, Field
 
-from .const import CMD_TYPE
+CMD_TYPE = Optional[Union[list[str], tuple[bool, list[str]]]]
 
 
 class Config(BaseModel):
@@ -31,26 +32,27 @@ class Config(BaseModel):
     # 默认参数
     arg_default: Optional[Union[int, str]] = Field(default=None, alias="nezha_arg_default")
 
-    template_server: str = Field(default=(
-        "#$.name# #$.IfOnline#\n"
-        "   ID: #$.id# TAG: #$.tag#\n"
-        "   IPv4: #$.ipv4#\n"
-        "   IPv6: #$.ipv6#"
-    ), alias="nezha_template_server")
-    template_server_details: str = Field(default=(
-        "#$.name# #$.IfOnline#\n"
-        "   ID: #$.id# TAG: #$.tag#\n"
-        "   负载: #$.status.Load1#,#$.status.Load5#,#$.status.Load15#\n"
-        "   CPU: #$.CpuPercent#\n"
-        "   内存: #$.MemoryPercent# 硬盘: #$.DiskPercent#\n"
-        "   流量: #$.status.NetInTransfer#↓ ↑#$.status.NetOutTransfer#\n"
-        "   IPv4: #$.ipv4#\n"
-        "   IPv6: #$.ipv6#"
-    ), alias="nezha_template_server_details")
+    template_server: str = Field(
+        default="#$.name# #$.IfOnline#\n   ID: #$.id# TAG: #$.tag#\n   IPv4: #$.ipv4#\n   IPv6: #$.ipv6#",
+        alias="nezha_template_server",
+    )
+    template_server_details: str = Field(
+        default=(
+            "#$.name# #$.IfOnline#\n"
+            "   ID: #$.id# TAG: #$.tag#\n"
+            "   负载: #$.status.Load1#,#$.status.Load5#,#$.status.Load15#\n"
+            "   CPU: #$.CpuPercent#\n"
+            "   内存: #$.MemoryPercent# 硬盘: #$.DiskPercent#\n"
+            "   流量: #$.status.NetInTransfer#↓ ↑#$.status.NetOutTransfer#\n"
+            "   IPv4: #$.ipv4#\n"
+            "   IPv6: #$.ipv6#"
+        ),
+        alias="nezha_template_server_details",
+    )
     # datetime.strftime(nezha_template_datetime)
     template_datetime: str = Field(default="%Y-%m-%d %H:%M:%S", alias="nezha_template_datetime")
     template_datetime_placeholder: str = Field(default="无", alias="nezha_template_datetime_placeholder")
-    nezha_template_online_offline: List[str] = Field(default=["在线", "离线"], alias="nezha_template_online_offline")
+    nezha_template_online_offline: list[str] = Field(default=["在线", "离线"], alias="nezha_template_online_offline")
 
     # 浮点数小数位数、是否展示IP、是否省略IP中间部分、判断离线时间
     decimal_places: int = Field(default=1, alias="nezha_decimal_places")
@@ -59,7 +61,15 @@ class Config(BaseModel):
     offline_time: float = Field(default=30, alias="nezha_offline_time")
 
 
-config: Config = get_plugin_config(Config)
-_CM = CommandMeta(compact=config.use_compact, description="")
+LOAD_SUCCESS = False
+_CM = CommandMeta(description="")
 
-__all__ = ["Config", "config", "_CM"]
+try:
+    config: Config = get_plugin_config(Config)
+    LOAD_SUCCESS = True
+    _CM.compact = config.use_compact
+except Exception as e:
+    logger.error("nezha插件配置加载失败, 请检查配置.")
+    logger.exception(e)
+
+__all__ = ["Config", "config", "_CM", "CMD_TYPE", "LOAD_SUCCESS"]

@@ -1,13 +1,12 @@
 from re import findall
-from typing import List
 
 from jsonpath import jsonpath
-from pydantic import BaseModel
 from nonebot import logger
+from pydantic import BaseModel
 
 
 def render(template: str, data: BaseModel) -> str:
-    data = data.dict()
+    data = data.model_dump()
     # #(.*?)#
     for i in findall(r"(?<!\\)#\s*(.*?)\s*#", template):
         _ = jsonpath(data, i, use_eval=False)
@@ -20,5 +19,5 @@ def render(template: str, data: BaseModel) -> str:
     return template.replace("\\#", "#")
 
 
-def render_list(template: str, data: List[BaseModel]) -> str:
+def render_list(template: str, data: list[BaseModel]) -> str:
     return "\n".join(f"{i + 1}.{render(template, d)}" for i, d in enumerate(data))

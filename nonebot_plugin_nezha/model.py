@@ -1,11 +1,10 @@
 from abc import abstractmethod
 from datetime import datetime
-from typing import List, Union
 
 from pydantic import BaseModel
 
-from .const import validator
 from .config import config
+from .tool import validator
 
 _n = config.decimal_places
 
@@ -15,7 +14,6 @@ def _rd(x):
 
 
 class M(str):
-
     @classmethod
     def __get_validators__(cls):
         yield cls.transfer
@@ -28,7 +26,7 @@ class M(str):
 
 class ToTime(M):
     @classmethod
-    def transfer(cls, _: Union[int, float], *__, **___):
+    def transfer(cls, _: float, *__, **___):
         if _ < 60:
             return f"{_}s"
         elif _ < 60 * 60:
@@ -40,7 +38,6 @@ class ToTime(M):
 
 
 class ToDatetime(M):
-
     @classmethod
     def transfer(cls, _: int, *__, **___):
         _ = datetime.fromtimestamp(_)
@@ -108,7 +105,7 @@ class ToOnlineStatus(M):
 class Host(BaseModel):
     Platform: str
     PlatformVersion: str
-    CPU: List[str]
+    CPU: list[str]
     MemTotal: ToTotal
     DiskTotal: ToTotal
     SwapTotal: ToTotal
